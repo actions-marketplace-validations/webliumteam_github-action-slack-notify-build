@@ -53,8 +53,8 @@ function buildSlackAttachments({
         },
 
         {
-          title: 'Status',
-          value: status,
+          title: 'Event',
+          value: event,
           short: true,
         },
         {
@@ -64,8 +64,8 @@ function buildSlackAttachments({
         },
 
         {
-          title: 'Event',
-          value: event,
+          title: 'Status',
+          value: status,
           short: true,
         },
         {

@@ -1546,7 +1546,15 @@ const { buildSlackAttachments, formatChannelName } = __webpack_require__(543);
       return;
     }
 
-    const attachments = buildSlackAttachments({ status, color, github, deployBranch, deployEnv, deployAuthor, deployHeadCommitMessage });
+    const attachments = buildSlackAttachments({
+      status,
+      color,
+      github,
+      deployBranch,
+      deployEnv,
+      deployAuthor,
+      deployHeadCommitMessage,
+    });
     const channelId = core.getInput('channel_id') || (await lookUpChannelId({ slack, channel }));
 
     if (!channelId) {
@@ -24493,7 +24501,15 @@ module.exports = resolveCommand;
 
 const { context } = __webpack_require__(469);
 
-function buildSlackAttachments({ status, color, github, deployBranch, deployEnv, deployAuthor, deployHeadCommitMessage }) {
+function buildSlackAttachments({
+  status,
+  color,
+  github,
+  deployBranch,
+  deployEnv,
+  deployAuthor,
+  deployHeadCommitMessage,
+}) {
   const { payload, ref, workflow, eventName } = github.context;
   const { owner, repo } = context.repo;
   const event = eventName;
@@ -24538,8 +24554,8 @@ function buildSlackAttachments({ status, color, github, deployBranch, deployEnv,
         },
 
         {
-          title: 'Status',
-          value: status,
+          title: 'Event',
+          value: event,
           short: true,
         },
         {
@@ -24549,8 +24565,8 @@ function buildSlackAttachments({ status, color, github, deployBranch, deployEnv,
         },
 
         {
-          title: 'Event',
-          value: event,
+          title: 'Status',
+          value: status,
           short: true,
         },
         {
