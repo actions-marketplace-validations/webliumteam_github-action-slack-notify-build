@@ -20,6 +20,15 @@ inputs:
   message_id:
     description: 'The ID of the existing Slack message to update.'
     required: false
+  deploy_branch:
+    description: 'Branch for deploy.'
+    required: false
+  deploy_env:
+    description: 'Environment for deploy.'
+    required: false
+  deploy_author:
+    description: 'Author for deploy.'
+    required: false
 outputs:
   message_id:
     description: 'The unique timestamp identifier of the Slack message sent'
