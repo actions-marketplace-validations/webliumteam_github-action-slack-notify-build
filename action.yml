@@ -29,6 +29,9 @@ inputs:
   deploy_author:
     description: 'Author for deploy.'
     required: false
+  deploy_head_commit_message:
+    description: 'Head commit message for deploy.'
+    required: false
 outputs:
   message_id:
     description: 'The unique timestamp identifier of the Slack message sent'

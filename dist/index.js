@@ -1537,6 +1537,7 @@ const { buildSlackAttachments, formatChannelName } = __webpack_require__(543);
     const deployBranch = core.getInput('deploy_branch');
     const deployEnv = core.getInput('deploy_env');
     const deployAuthor = core.getInput('deploy_author');
+    const deployHeadCommitMessage = core.getInput('deploy_head_commit_message');
     const token = process.env.SLACK_BOT_TOKEN;
     const slack = new WebClient(token);
 
@@ -1545,7 +1546,7 @@ const { buildSlackAttachments, formatChannelName } = __webpack_require__(543);
       return;
     }
 
-    const attachments = buildSlackAttachments({ status, color, github, deployBranch, deployEnv, deployAuthor });
+    const attachments = buildSlackAttachments({ status, color, github, deployBranch, deployEnv, deployAuthor, deployHeadCommitMessage });
     const channelId = core.getInput('channel_id') || (await lookUpChannelId({ slack, channel }));
 
     if (!channelId) {
@@ -24492,7 +24493,7 @@ module.exports = resolveCommand;
 
 const { context } = __webpack_require__(469);
 
-function buildSlackAttachments({ status, color, github, deployBranch, deployEnv, deployAuthor }) {
+function buildSlackAttachments({ status, color, github, deployBranch, deployEnv, deployAuthor, deployHeadCommitMessage }) {
   const { payload, ref, workflow, eventName } = github.context;
   const { owner, repo } = context.repo;
   const event = eventName;
@@ -24528,20 +24529,17 @@ function buildSlackAttachments({ status, color, github, deployBranch, deployEnv,
           value: `<https://github.com/${owner}/${repo}/actions/runs/${runId} | ${workflow}>`,
           short: true,
         },
+
+        referenceLink,
+        {
+          title: 'Branch',
+          value: `<https://github.com/${owner}/${repo}/tree/${deployBranch} | ${deployBranch}>`,
+          short: true,
+        },
+
         {
           title: 'Status',
           value: status,
-          short: true,
-        },
-        referenceLink,
-        {
-          title: 'Event',
-          value: event,
-          short: true,
-        },
-        {
-          title: 'Branch',
-          value: deployBranch,
           short: true,
         },
         {
@@ -24549,10 +24547,22 @@ function buildSlackAttachments({ status, color, github, deployBranch, deployEnv,
           value: deployEnv,
           short: true,
         },
+
+        {
+          title: 'Event',
+          value: event,
+          short: true,
+        },
         {
           title: 'Author',
           value: deployAuthor,
           short: true,
+        },
+
+        {
+          title: 'Commit Message',
+          value: deployHeadCommitMessage,
+          short: false,
         },
       ],
       footer_icon: 'https://github.githubassets.com/favicon.ico',
